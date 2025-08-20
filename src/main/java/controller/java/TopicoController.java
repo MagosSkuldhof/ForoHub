@@ -71,7 +71,22 @@ public class TopicoController {
         Topico guardado = topicoRepository.save(topic
 
 
-                // Listar todos los tópicos
+                // Eliminar un tópico específico
+        @DeleteMapping("/{id}")
+        @Transactional
+        public ResponseEntity<?> eliminarTopico(@PathVariable Long id) {
+            Optional<Topico> topicoExistente = topicoRepository.findById(id);
+
+            if (!topicoExistente.isPresent()) {
+                return ResponseEntity.status(404).body("Error: Tópico no encontrado");
+            }
+
+            topicoRepository.deleteById(id);
+            return ResponseEntity.ok("Tópico eliminado correctamente");
+        }
+
+
+        // Listar todos los tópicos
     @GetMapping
     public List<Topico> listarTopicos() {
         return topicoRepository.findAll(); // Devuelve todos los campos de cada tópico
