@@ -15,16 +15,22 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfigurations {
 
     @Bean
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable() // Para simplificar pruebas; en producción ajustar CSRF
+                .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**").permitAll() // Permitir login sin autenticar
-                .anyRequest().authenticated() // El resto requiere autenticación
+                .requestMatchers("/login", "/auth/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
-                .httpBasic(); // Autenticación básica para ejemplo
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
