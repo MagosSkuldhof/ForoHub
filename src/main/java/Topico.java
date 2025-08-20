@@ -26,6 +26,14 @@ public class Topico {
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     // Getters y setters
+    @NotBlank(message = "El estado es obligatorio")
+    private String estado = "abierto"; // Valor por defecto al crear un tópico
+
+    // Getter y Setter
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
+
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
